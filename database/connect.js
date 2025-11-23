@@ -1,47 +1,36 @@
 const mysql = require('mysql');
 const { host, user, password, database } = require('../configs.js').configs;
 
-const connectToDatabase = () => {
-  const connection = mysql.createConnection({
-    host: host,
-    user: user,
-    password: password,
-    database: database
-  });
+let pool = null;
 
-  const connect = () => {
+// Función para inicializar y devolver la conexión
+function connectToDatabase() {
+  if (!pool) {
+    pool = mysql.createPool({
+      connectionLimit: 10,
+      host,
+      user,
+      password,
+      database
+    });
+
+    console.log("✅ MySQL Pool creado exitosamente");
+  }
+
+  // Función query con Promesas
+  const query = (sql, values = []) => {
     return new Promise((resolve, reject) => {
-      connection.connect((error) => {
+      pool.query(sql, values, (error, results) => {
         if (error) {
-          console.error("[ERROR] ".cyan + `${error}`.red);
-          reject(error);
-        } else {
-          console.log("[MySQL] ".white + "Funcionando...".green);
-          resolve();
+          console.error("❌ Error en MySQL:", error);
+          return reject(error);
         }
+        resolve(results);
       });
     });
   };
 
-  const closeConnection = () => {
-    return new Promise((resolve, reject) => {
-      connection.end((error) => {
-        if (error) {
-          console.error("[ERROR] ".cyan + `${error}`.red);
-          reject(error);
-        } else {
-          console.log("[MySQL] ".white + "Conexión cerrada.".yellow);
-          resolve();
-        }
-      });
-    });
-  };
-
-  // Retorna la conexión, la función para conectar y la función para cerrar
-  return {
-    connection,
-    connect
-  };
-};
+  return { query, pool };
+}
 
 module.exports = connectToDatabase;

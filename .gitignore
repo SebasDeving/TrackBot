@@ -12,11 +12,6 @@ package-lock.json
 logs/
 *.log
 
-# Local databases / user data
-mega_databases/
-database/
-*.sqlite
-*.db
 
 # VSCode
 .vscode/
