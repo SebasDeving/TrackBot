@@ -1,0 +1,29 @@
+{
+  "name": "bot-traking",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node tracking.js",
+    "dev": "nodemon tracking.js"
+  },
+  "dependencies": {
+    "@androz2091/discord-invites-tracker": "^1.2.3",
+    "@discordjs/rest": "^2.2.0",
+    "axios": "^1.9.0",
+    "cli-table3": "^0.6.3",
+    "colors": "^1.4.0",
+    "discord-html-transcripts": "^2.4.5",
+    "discord.js": "^13.17.1",
+    "dotenv": "^16.4.7",
+    "megadb": "^3.4.0",
+    "moment": "^2.29.4",
+    "mysql": "^2.18.1",
+    "node-fetch": "^3.3.2",
+    "pm2": "^5.4.0",
+    "puppeteer": "^24.10.0",
+    "sourcebin_js": "^0.0.3-ignore",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

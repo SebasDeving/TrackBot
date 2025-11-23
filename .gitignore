@@ -1,0 +1,25 @@
+# Node
+node_modules/
+npm-debug.log*
+package-lock.json
+.DS_Store
+
+# Env
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Local databases / user data
+mega_databases/
+database/
+*.sqlite
+*.db
+
+# VSCode
+.vscode/
+
+# Mac
+*.DS_Store
