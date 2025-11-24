@@ -1,3 +1,4 @@
+require('dotenv').config();
 process.on('warning', e => console.warn(e.stack));
 require("colors");
 const fs = require('fs');
