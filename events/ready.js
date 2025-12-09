@@ -1,22 +1,28 @@
-const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton } = require('discord.js');
-const MegaDB = require('megadb');
-
-const usersDB = new MegaDB.crearDB('usersDB');
+const Table = require('cli-table3');
+const colors = require('colors');
 
 module.exports = {
     name: "ready",
     run: async (client) => {
-
-        const Table = require('cli-table3');
-
         try {
+            // Validar que el cliente está listo
+            if (!client || !client.user) {
+                throw new Error('Cliente no inicializado correctamente');
+            }
 
+            // Calcular totales
+            const totalServers = client.guilds.cache.size;
+            const totalUsers = client.guilds.cache.reduce(
+                (acc, guild) => acc + guild.memberCount, 
+                0
+            );
             const totalChannels = client.guilds.cache.reduce(
                 (acc, guild) => acc + guild.channels.cache.size,
                 0
             );
 
-            client.user.setPresence({
+            // Configurar presencia del bot
+            await client.user.setPresence({
                 status: "online",
                 afk: false,
                 activities: [
@@ -27,18 +33,21 @@ module.exports = {
                 ]
             });
 
+            // Mostrar información en consola
             const table = new Table();
             table.push(
                 { 'Nombre del Bot': client.user.tag },
-                { 'Servidores': client.guilds.cache.size },
-                { 'Usuarios': client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0) },
+                { 'Servidores': totalServers },
+                { 'Usuarios': totalUsers },
                 { 'Canales': totalChannels }
             );
 
-            console.log(table.toString());
+            console.log('\n' + table.toString());
+            console.log(`\n✅ Bot iniciado correctamente como ${client.user.tag}`.green);
 
         } catch (error) {
-            console.log("[ERROR] ".cyan + `${error.stack}`.red);
+            console.error("[ERROR]".red + ` en evento ready: ${error.message}`.red);
+            console.error(error.stack);
         }
     }
 };
